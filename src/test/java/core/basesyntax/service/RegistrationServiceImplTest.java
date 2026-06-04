@@ -21,6 +21,26 @@ class RegistrationServiceImplTest {
     }
 
     @Test
+    void minusAge_notOk() {
+        User user = new User();
+        user.setAge(-5);
+        user.setLogin("dasersix111");
+        user.setPassword("1234565");
+        RegistrationServiceImpl reg = new RegistrationServiceImpl();
+        assertThrows(InvalidDataException.class, () -> reg.register(user));
+    }
+
+    @Test
+    void edgeAge_notOk() {
+        User user = new User();
+        user.setAge(17);
+        user.setLogin("dasersix1111");
+        user.setPassword("1234565");
+        RegistrationServiceImpl reg = new RegistrationServiceImpl();
+        assertThrows(InvalidDataException.class, () -> reg.register(user));
+    }
+
+    @Test
     void exactAge_Ok() {
         User user = new User();
         user.setAge(18);
@@ -37,6 +57,16 @@ class RegistrationServiceImplTest {
         User user = new User();
         user.setAge(19);
         user.setLogin("sazadi4");
+        user.setPassword("1234");
+        RegistrationServiceImpl reg = new RegistrationServiceImpl();
+        assertThrows(InvalidDataException.class, () -> reg.register(user));
+    }
+
+    @Test
+    void edgePassword_notOk() {
+        User user = new User();
+        user.setAge(19);
+        user.setLogin("sazadi41");
         user.setPassword("12345");
         RegistrationServiceImpl reg = new RegistrationServiceImpl();
         assertThrows(InvalidDataException.class, () -> reg.register(user));
@@ -56,6 +86,16 @@ class RegistrationServiceImplTest {
 
     @Test
     void wrongLogin_notOk() {
+        User user = new User();
+        user.setAge(19);
+        user.setLogin("dase");
+        user.setPassword("12345678");
+        RegistrationServiceImpl reg = new RegistrationServiceImpl();
+        assertThrows(InvalidDataException.class, () -> reg.register(user));
+    }
+
+    @Test
+    void edgeLogin_notOk() {
         User user = new User();
         user.setAge(19);
         user.setLogin("daser");
@@ -98,11 +138,37 @@ class RegistrationServiceImplTest {
 
     @Test
     void nullUser_notOk() {
+        User user = null;
+        RegistrationServiceImpl reg = new RegistrationServiceImpl();
+        assertThrows(InvalidDataException.class, () -> reg.register(user));
+    }
+
+    @Test
+    void nullPassword_notOk() {
+        User user = new User();
+        user.setAge(19);
+        user.setLogin("12345678");
+        user.setPassword(null);
+        RegistrationServiceImpl reg = new RegistrationServiceImpl();
+        assertThrows(InvalidDataException.class, () -> reg.register(user));
+    }
+
+    @Test
+    void nullLogin_notOk() {
+        User user = new User();
+        user.setAge(19);
+        user.setLogin(null);
+        user.setPassword("dasersazadi");
+        RegistrationServiceImpl reg = new RegistrationServiceImpl();
+        assertThrows(InvalidDataException.class, () -> reg.register(user));
+    }
+
+    @Test
+    void nullAge_notOk() {
         User user = new User();
         user.setAge(null);
-        user.setId(null);
-        user.setLogin(null);
-        user.setPassword(null);
+        user.setLogin("doublebyte");
+        user.setPassword("12345678");
         RegistrationServiceImpl reg = new RegistrationServiceImpl();
         assertThrows(InvalidDataException.class, () -> reg.register(user));
     }

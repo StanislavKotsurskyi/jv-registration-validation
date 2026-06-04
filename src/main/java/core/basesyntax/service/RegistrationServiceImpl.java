@@ -6,10 +6,10 @@ import core.basesyntax.exception.InvalidDataException;
 import core.basesyntax.model.User;
 
 public class RegistrationServiceImpl implements RegistrationService {
+    private static final int MIN_AGE = 18;
+    private static final int MIN_PASS_L = 6;
+    private static final int MIN_LOG_L = 6;
     private final StorageDao storageDao = new StorageDaoImpl();
-    private final static int MIN_AGE = 18;
-    private final static int MIN_PASS_L = 6;
-    private final static int MIN_LOG_L = 6;
 
     @Override
     public User register(User user) {
