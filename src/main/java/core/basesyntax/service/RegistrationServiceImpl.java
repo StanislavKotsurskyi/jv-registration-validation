@@ -7,24 +7,31 @@ import core.basesyntax.model.User;
 
 public class RegistrationServiceImpl implements RegistrationService {
     private final StorageDao storageDao = new StorageDaoImpl();
+    private final static int MIN_AGE = 18;
+    private final static int MIN_PASS_L = 6;
+    private final static int MIN_LOG_L = 6;
 
     @Override
     public User register(User user) {
         if (user == null) {
             throw new InvalidDataException("User can`t be null");
         }
-        if (user.getLogin() == null
-                || user.getPassword() == null
-                || user.getAge() == null) {
-            throw new InvalidDataException("User fields cannot be null");
+        if (user.getLogin() == null) {
+            throw new InvalidDataException("User login cannot be null");
         }
-        if (user.getLogin().length() < 6) {
+        if (user.getPassword() == null) {
+            throw new InvalidDataException("User password cannot be null");
+        }
+        if (user.getAge() == null) {
+            throw new InvalidDataException("User age cannot be null");
+        }
+        if (user.getLogin().length() < MIN_LOG_L) {
             throw new InvalidDataException("User login length must be at least 6 characters");
         }
-        if (user.getPassword().length() < 6) {
+        if (user.getPassword().length() < MIN_PASS_L) {
             throw new InvalidDataException("User password length must be at least 6 characters");
         }
-        if (user.getAge() < 18) {
+        if (user.getAge() < MIN_AGE) {
             throw new InvalidDataException("User must be at least 18 years old");
         }
         if (storageDao.get(user.getLogin()) != null) {
